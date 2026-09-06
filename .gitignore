@@ -1,0 +1,19 @@
+<<<<<<< HEAD
+ai-ml/.venv/
+.venv/
+node_modules/
+.env
+=======
+node_modules/
+.env
+*.log
+coverage/
+
+.env
+venv/
+>>>>>>> e236aa37c353724fa19dffdf3f7b9b17cecac8f5
+ai-ml/datasets/jal_rakshak_synthetic_1M.csv
+ai-ml/datasets/jal_rakshak_synthetic_1M.csv
+ai-ml/.venv/
+node_modules/
+.env

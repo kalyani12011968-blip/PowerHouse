@@ -1,0 +1,17 @@
+import { useParams } from "react-router-dom";
+import { AlertTriangle, CheckCircle2, MapPin } from "lucide-react";
+import { useApp } from "../context/AppContext";
+import PageHeader from "../components/common/PageHeader";
+import StatusBadge from "../components/common/StatusBadge";
+import OpsMap from "../components/map/OpsMap";
+import { eventLabel, riskStatus } from "../utils/risk";
+import { formatDateTime } from "../utils/formatters";
+
+export default function EventDetails(){
+ const {eventId}=useParams(); const {events,devices}=useApp(); const e=events.find(x=>x.eventId===eventId)||events[0]; const d=devices.find(x=>x.deviceId===e.deviceId)||devices[0];
+ const loss=e.event==="ABNORMAL_WATER_LOSS";
+ return <div><PageHeader title={eventLabel(e.event)} description="Detailed incident report and response record." actions={<StatusBadge status={riskStatus(e.riskScore)} label={`${e.riskScore} — ${riskStatus(e.riskScore)}`}/>}/>
+ <div className="grid gap-5 lg:grid-cols-[1.1fr_.9fr]"><section className="panel p-6"><div className="grid grid-cols-2 gap-5 md:grid-cols-3">{[["Device",e.deviceId],["Location",d.location],["Detected",formatDateTime(e.timestamp)],["Confidence",`${e.confidence}%`],["Water Level",loss?"91 → 63 cm":"91 cm"],["Rise Rate",loss?"-7.5 cm/min":"7.2 cm/min"],["Acceleration",loss?"-1.3":"1.4"],["Rainfall",loss?"15 mm":"80 mm"],["Temperature","29°C"],["Trend",loss?"RAPID FALL":"RAPID RISE"],["Historical Average","70 cm"],["Historical Maximum","90 cm"]].map(([k,v])=><div key={k}><div className="eyebrow">{k}</div><div className="mt-1 text-sm font-semibold text-slate-200">{v}</div></div>)}</div><div className="mt-7 border-t border-slate-800 pt-6"><div className="eyebrow">AI Explanation</div><p className="mt-3 text-sm leading-6 text-slate-300">{loss ? "The water level changed unusually quickly in a falling direction. Possible explanations include leakage, diversion, structural failure, unusual discharge, or a sensor anomaly. The monitoring point should be investigated." : "The current risk is high because the water level is rising rapidly while rainfall is elevated and the current level is above its historical baseline."}</p></div><div className="mt-7 border-t border-slate-800 pt-6"><div className="eyebrow">Response</div><div className="mt-3 grid gap-2 sm:grid-cols-3"><Response text="GSM SMS sent"/><Response text="Dashboard alert"/><Response text="Local alarm activated"/></div></div>{loss&&<div className="mt-6 border border-orange-500/20 bg-orange-400/5 p-4 text-sm"><div className="font-semibold text-orange-200">ABNORMAL WATER-LOSS BEHAVIOR DETECTED</div><div className="mt-2 text-slate-400">Possible explanations: leakage · diversion · structural failure · unusual discharge · sensor anomaly.</div><button className="btn mt-4 border-orange-500/20 text-orange-200">Investigate Monitoring Point</button></div>}</section><section className="panel overflow-hidden"><div className="border-b border-slate-800 p-4"><div className="eyebrow">Event Location</div><div className="mt-1 flex items-center gap-2 text-sm"><MapPin size={14} className="text-cyan-300"/>{e.latitude.toFixed(4)}, {e.longitude.toFixed(4)}</div></div><OpsMap devices={[d]} height={500}/></section></div>
+ </div>
+}
+function Response({text}){return <div className="flex items-center gap-2 border border-emerald-500/10 bg-emerald-400/5 p-3 text-xs text-slate-300"><CheckCircle2 size={14} className="text-emerald-300"/>{text}</div>}

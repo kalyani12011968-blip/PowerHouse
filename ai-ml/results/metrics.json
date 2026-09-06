@@ -1,0 +1,18 @@
+{
+    "dataset": {
+        "total_rows": 1000000,
+        "training_rows": 700000,
+        "validation_rows": 150000,
+        "testing_rows": 150000
+    },
+    "event_classifier": {
+        "model": "XGBoost",
+        "accuracy": 0.9814466666666667
+    },
+    "risk_model": {
+        "model": "XGBoost",
+        "MAE": 1.0118920355648093,
+        "RMSE": 2.5023649962567194,
+        "R2": 0.9901329606795651
+    }
+}

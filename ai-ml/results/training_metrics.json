@@ -1,0 +1,15 @@
+{
+    "dataset": "jal_rakshak_synthetic_1M.csv",
+    "event_classes": [
+        "ABNORMAL_WATER_LOSS",
+        "FLOOD_ESCALATION",
+        "NORMAL",
+        "SENSOR_ANOMALY"
+    ],
+    "event_accuracy": 0.9837266666666666,
+    "risk_mae": 0.9825558225049339,
+    "risk_rmse": 2.472215139197524,
+    "risk_r2": 0.9903692952397037,
+    "event_feature_count": 130,
+    "risk_feature_count": 130
+}
